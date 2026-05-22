@@ -24,3 +24,18 @@ table_name = "Largest_banks"
 log_file = "code_log.txt"
 
 exchange_rate_path = "exchange_rate.csv"
+
+# =========================================================
+# LOGGING FUNCTION
+# =========================================================
+
+def log_progress(message):
+
+    timestamp_format = "%Y-%m-%d %H:%M:%S"
+
+    now = datetime.now()
+
+    timestamp = now.strftime(timestamp_format)
+
+    with open(LOG_FILE, "a") as f:
+        f.write(timestamp + " : " + message + "\n")
