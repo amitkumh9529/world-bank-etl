@@ -143,3 +143,88 @@ def run_query(query_statement, sql_connection):
     print(query_output)
 
     log_progress("Query executed successfully")
+
+
+# =========================================================
+# MAIN ETL PIPELINE
+# =========================================================
+
+def main():
+
+    log_progress("ETL Job Started")
+
+    # ---------------- EXTRACT ----------------
+
+    log_progress("Extract phase Started")
+
+    extracted_df = extract(URL, TABLE_ATTRIBS)
+
+    print("\nExtracted Data:")
+    print(extracted_df.head())
+
+    log_progress("Extract phase Ended")
+
+    # ---------------- TRANSFORM ----------------
+
+    log_progress("Transform phase Started")
+
+    transformed_df = transform(
+        extracted_df,
+        EXCHANGE_RATE_CSV
+    )
+
+    print("\nTransformed Data:")
+    print(transformed_df.head())
+
+    log_progress("Transform phase Ended")
+
+    # ---------------- LOAD ----------------
+
+    log_progress("Load phase Started")
+
+    load_to_csv(
+        transformed_df,
+        OUTPUT_CSV_PATH
+    )
+
+    sql_connection = sqlite3.connect(DATABASE_NAME)
+
+    load_to_db(
+        transformed_df,
+        sql_connection,
+        TABLE_NAME
+    )
+
+    log_progress("Load phase Ended")
+
+    # ---------------- QUERY ----------------
+
+    query_statement_1 = f"""
+    SELECT * FROM {TABLE_NAME} LIMIT 5
+    """
+
+    run_query(query_statement_1, sql_connection)
+
+    query_statement_2 = f"""
+    SELECT Name
+    FROM {TABLE_NAME}
+    ORDER BY MC_USD_Billion DESC
+    LIMIT 5
+    """
+
+    run_query(query_statement_2, sql_connection)
+
+    # ---------------- CLOSE CONNECTION ----------------
+
+    sql_connection.close()
+
+    log_progress("Database connection closed")
+
+    log_progress("ETL Job Ended Successfully")
+
+# =========================================================
+# DRIVER CODE
+# =========================================================
+
+if __name__ == "__main__":
+    main()
