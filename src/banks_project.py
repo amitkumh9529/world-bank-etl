@@ -39,3 +39,37 @@ def log_progress(message):
 
     with open(LOG_FILE, "a") as f:
         f.write(timestamp + " : " + message + "\n")
+
+# =========================================================
+# EXTRACT FUNCTION
+# =========================================================
+
+def extract(url, table_attribs):
+
+    html_page = requests.get(url).text
+
+    soup = BeautifulSoup(html_page, "html.parser")
+
+    df = pd.DataFrame(columns=table_attribs)
+
+    tables = soup.find_all("tbody")
+
+    rows = tables[0].find_all("tr")
+
+    for row in rows:
+
+        col = row.find_all("td")
+
+        if len(col) != 0:
+
+            data_dict = {
+                "Name": col[1].find_all("a")[1]["title"],
+                "MC_USD_Billion": float(col[2].contents[0][:-1])
+            }
+
+            temp_df = pd.DataFrame(data_dict, index=[0])
+
+            df = pd.concat([df, temp_df], ignore_index=True)
+
+    return df
+
