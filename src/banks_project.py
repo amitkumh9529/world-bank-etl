@@ -126,3 +126,20 @@ def load_to_db(df, sql_connection, table_name):
         if_exists="replace",
         index=False
     )
+
+
+# =========================================================
+# RUN QUERY FUNCTION
+# =========================================================
+
+def run_query(query_statement, sql_connection):
+
+    print("\nQUERY:")
+    print(query_statement)
+
+    query_output = pd.read_sql(query_statement, sql_connection)
+
+    print("\nQUERY OUTPUT:")
+    print(query_output)
+
+    log_progress("Query executed successfully")
