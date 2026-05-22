@@ -73,3 +73,35 @@ def extract(url, table_attribs):
 
     return df
 
+# =========================================================
+# TRANSFORM FUNCTION
+# =========================================================
+
+def transform(df, exchange_rate_csv):
+
+    exchange_rate_df = pd.read_csv(exchange_rate_csv)
+
+    exchange_rate_df.set_index("Currency", inplace=True)
+
+    GBP_rate = exchange_rate_df.loc["GBP", "Rate"]
+
+    EUR_rate = exchange_rate_df.loc["EUR", "Rate"]
+
+    INR_rate = exchange_rate_df.loc["INR", "Rate"]
+
+    df["MC_GBP_Billion"] = np.round(
+        df["MC_USD_Billion"] * GBP_rate,
+        2
+    )
+
+    df["MC_EUR_Billion"] = np.round(
+        df["MC_USD_Billion"] * EUR_rate,
+        2
+    )
+
+    df["MC_INR_Billion"] = np.round(
+        df["MC_USD_Billion"] * INR_rate,
+        2
+    )
+
+    return df
