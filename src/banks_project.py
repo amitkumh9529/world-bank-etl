@@ -11,19 +11,19 @@ from datetime import datetime
 # CONFIG
 # -------------------------------
 
-url = "https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks"
+URL = "https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks"
 
-table_attribs = ["Name", "MC_USD_Billion"]
+TABLE_ATTRIBS = ["Name", "MC_USD_Billion"]
 
-csv_path = "./Largest_banks_data.csv"
+OUTPUT_CSV_PATH = "./data/Largest_banks_data.csv"
 
-db_name = "Banks.db"
+DATABASE_NAME = "./data/Banks.db"
 
-table_name = "Largest_banks"
+TABLE_NAME = "Largest_banks"
 
-log_file = "code_log.txt"
+LOG_FILE = "./logs/code_log.txt"
 
-exchange_rate_path = "exchange_rate.csv"
+EXCHANGE_RATE_CSV = "./data/exchange_rate.csv"
 
 # =========================================================
 # LOGGING FUNCTION
